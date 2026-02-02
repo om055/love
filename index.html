@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Sona tuze Maje Baikoo ❤️</title>
+
+<style>
+*{
+    margin:0;padding:0;box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    font-family:'Segoe UI',sans-serif;
+}
+body{
+    height:100vh;
+    background:linear-gradient(160deg,#ff7eb3,#2b0030);
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+/* 🌸 BACKGROUND HEARTS */
+.bg-heart{
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:rgba(255,255,255,0.15);
+    transform:rotate(45deg);
+    animation:bgFloat linear infinite;
+    z-index:0;
+}
+.bg-heart::before,
+.bg-heart::after{
+    content:'';
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:rgba(255,255,255,0.15);
+    border-radius:50%;
+}
+.bg-heart::before{top:-10px;left:0;}
+.bg-heart::after{left:-10px;top:0;}
+
+@keyframes bgFloat{
+    from{
+        transform:translateY(100vh) rotate(45deg);
+        opacity:0;
+    }
+    30%{opacity:.4;}
+    to{
+        transform:translateY(-20vh) rotate(45deg);
+        opacity:0;
+    }
+}
+
+.page{
+    position:absolute;
+    width:100%;
+    max-width:420px;
+    padding:25px;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .8s ease;
+    z-index:2;
+}
+.page.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+h1{
+    font-size:2.3rem;
+    margin-bottom:15px;
+    text-shadow:0 0 25px #ff4f9a;
+}
+p{line-height:1.6;}
+
+button{
+    margin-top:25px;
+    padding:14px 36px;
+    border:none;
+    border-radius:50px;
+    font-size:1.05rem;
+    background:linear-gradient(45deg,#ff4f9a,#ffc1dc);
+    color:white;
+    box-shadow:0 0 25px rgba(255,79,154,.9);
+}
+button:active{transform:scale(.95);}
+
+/* animated text */
+.love-text span{
+    opacity:0;
+    display:inline-block;
+    animation:textIn .6s forwards;
+}
+@keyframes textIn{
+    from{transform:translateY(20px);opacity:0;}
+    to{transform:translateY(0);opacity:1;}
+}
+
+/* slideshow */
+.slideshow{
+    width:260px;height:340px;
+    margin:20px auto;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 0 25px rgba(255,255,255,.4);
+}
+.slideshow img{
+    width:100%;height:100%;
+    object-fit:cover;
+    filter:blur(8px);
+    transform:scale(1.08);
+    opacity:0;
+    transition:filter 1.8s, transform 1.8s, opacity 1.5s;
+}
+.slideshow img.show{
+    filter:blur(0);
+    transform:scale(1);
+    opacity:1;
+}
+
+/* proposal */
+.choice{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+/* touch hearts */
+.heart{
+    position:absolute;
+    width:18px;height:18px;
+    background:#ff4f9a;
+    transform:rotate(45deg);
+    animation:float 5s linear forwards;
+    z-index:3;
+}
+.heart::before,.heart::after{
+    content:'';
+    position:absolute;
+    width:18px;height:18px;
+    background:#ff4f9a;
+    border-radius:50%;
+}
+.heart::before{top:-9px;left:0;}
+.heart::after{left:-9px;top:0;}
+@keyframes float{
+    to{transform:translateY(-160px) rotate(45deg);opacity:0;}
+}
+
+/* ripple */
+.ripple{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.4);
+    transform:scale(0);
+    animation:ripple .6s linear;
+    z-index:3;
+}
+@keyframes ripple{
+    to{transform:scale(4);opacity:0;}
+}
+audio{display:none;}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+    <h1>Sona Tuzi maje Baikoo💕</h1>
+    <p class="love-text" id="loveText"></p>
+    <button onclick="go(2)">Continue 💖</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <h1>Our Memories 📸</h1>
+    <div class="slideshow">
+        <img id="slide" src="photo1.jpeg">
+    </div>
+    <button onclick="go(3)">Next 💗</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <h1>My Promise 🤍</h1>
+    <p>
+        I promise Tula me Sathi Sodun nahi janr kadhi nahi,
+        Tula me maja peksha jast prem karen,
+        Tula me khup kush thevl  
+        Your Heart💕 is my home, Sona.
+    </p>
+    <button onclick="go(4)">One Last Thing 💍</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+    <h1>Sona… 💍</h1>
+    <p>Would u Marry Me in Future ?</p>
+    <div class="choice">
+        <button onclick="yesForever()">YES Omiii💕</button>
+        <button onclick="Notyet()"> Not Yet Decide💖</button>
+    </div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* background hearts generator */
+function createBgHeart(){
+    const h=document.createElement("div");
+    h.className="bg-heart";
+    const size=10+Math.random()*20;
+    h.style.width=h.style.height=size+"px";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=8+Math.random()*6+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),14000);
+}
+setInterval(createBgHeart,500);
+
+/* pages */
+const pages=[page1,page2,page3,page4];
+const music=document.getElementById("bgMusic");
+music.volume=0;
+
+function go(n){
+    pages.forEach(p=>p.classList.remove("active"));
+    pages[n-1].classList.add("active");
+    if(n===2) startMusic();
+}
+
+/* animated intro text */
+const text="Sona hech tula me propose kel hot aathvto ka?,     Sona tula aata sagl mahitiye mala baddal me kiti    prem karto. Tula baghun majha hruday anandane bharun jato. Tula baghun maja jag sundar diste.      Sona, me tula aaj aani saday prem karen. Bas mala tuzi sathi pahije deyshil and kayam maja sobt         rahshil na kiti pn problem yeu de na mala msg kar tuz answer";
+const loveText=document.getElementById("loveText");
+text.split("").forEach((c,i)=>{
+    const s=document.createElement("span");
+    s.innerHTML=c===" "?"&nbsp;":c;
+    s.style.animationDelay=`${i*0.04}s`;
+    loveText.appendChild(s);
+});
+
+/* music */
+function startMusic(){
+    music.play();
+    let v=0;
+    const fade=setInterval(()=>{
+        if(v<.7){v+=.03;music.volume=v;}
+        else clearInterval(fade);
+    },100);
+}
+
+/* slideshow */
+const photos=["photo1.jpeg","photo2.jpeg","photo3.jpeg","photo4.jpeg"];
+let index=0;
+const slide=document.getElementById("slide");
+slide.onload=()=>slide.classList.add("show");
+setInterval(()=>{
+    slide.classList.remove("show");
+    setTimeout(()=>{
+        index=(index+1)%photos.length;
+        slide.src=photos[index];
+    },600);
+},4500);
+
+/* yes forever */
+function yesForever(){
+    alert("Thank You Sona🙈❤️💍");
+    for(let i=0;i<40;i++){
+        setTimeout(()=>createHeart(innerWidth/2,innerHeight/2),i*80);
+    }
+}
+function Notyet(){
+    alert("Ok Sona❤️");
+}
+
+/* touch effects */
+document.addEventListener("touchstart",e=>{
+    const t=e.touches[0];
+    const r=document.createElement("span");
+    r.className="ripple";
+    r.style.left=t.clientX+"px";
+    r.style.top=t.clientY+"px";
+    r.style.width=r.style.height="20px";
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),600);
+    createHeart(t.clientX,t.clientY);
+});
+
+function createHeart(x,y){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.style.left=x+"px";
+    h.style.top=y+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+}
+</script>
+
+</body>
+</html>
